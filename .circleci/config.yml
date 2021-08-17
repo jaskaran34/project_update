@@ -48,7 +48,6 @@ jobs:
     steps:
       - checkout
       - run: npm i --prefix frontend
-      - run: npm run lint --prefix frontend
       - persist_to_workspace:
           root: ~/
           paths:
@@ -79,14 +78,14 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: npm audit --audit-level=critical --prefix backend
+      - run: npm audit  --prefix backend
 
   analyze_frontend:
     docker:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: npm audit --audit-level=critical --prefix frontend
+      - run: npm audit --prefix frontend
 
   deploy_backend_infrastructure:
     docker:
