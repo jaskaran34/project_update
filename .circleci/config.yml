@@ -40,7 +40,20 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/
-      - run: npm i --prefix frontend         
+      - run: npm i --prefix frontend
+  analyze_backend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - run: npm audit --audit-level=critical --prefix backend
+
+  analyze_frontend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - run: npm audit --audit-level=critical --prefix frontend    
 workflows:
   my_workflow:
     jobs:
@@ -52,3 +65,9 @@ workflows:
       - test_frontend:
           requires:
             - build_frontend
+      - analyze_backend:
+          requires:
+            - test_backend
+      - analyze_frontend:
+          requires:
+            - test_frontend      
