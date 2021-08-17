@@ -22,9 +22,33 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/frontend/node_modules            
+            - project/frontend/node_modules 
+  test_backend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/
+      - run: npm i --prefix backend
+      - run: npm run test --prefix backend
+
+  test_frontend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/
+      - run: npm i --prefix frontend         
 workflows:
   my_workflow:
     jobs:
       - build_backend
       - build_frontend
+      - test_backend:
+          requires:
+            - build_backend
+      - test_frontend:
+          requires:
+            - build_frontend
