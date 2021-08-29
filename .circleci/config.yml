@@ -45,7 +45,6 @@ jobs:
           command: |
             cd backend
             npm run build
-      - slack/status
 
   build_frontend:
     docker:
@@ -62,7 +61,6 @@ jobs:
           command: |
             cd frontend
             npm run build
-      - slack/status
 
   test_backend:
     docker:
